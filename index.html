@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#e9e2d2">
-<title>Альмерия · Дневник правителя</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Альмерия · Цена решения</title>
 <style>
   :root{--paper:#f7f2e7;--ink:#293947;--pale:#c5bcaa;--blue:#426683;--red:#a34f4b;--green:#4c7561;--gold:#a57c48}
   *{box-sizing:border-box}
@@ -98,6 +101,106 @@
   @media(max-width:690px){.notebook{display:block;min-height:100dvh}.left-sheet{padding:15px 18px 12px 30px;border-right:0;border-bottom:1px solid #c2b7a3}.left-sheet h1{font-size:37px;letter-spacing:-1.5px}.left-sheet .subtitle{font-size:13px;margin:3px 0 0}.left-sheet .divider,.map-wrap,.map-note,.map-foot{display:none}.holes{top:12px;bottom:12px;left:10px;flex-direction:row;gap:5px}.holes i{width:8px;height:8px}.eyebrow{font-size:9px;letter-spacing:2px}.right-sheet{min-height:calc(100dvh - 93px);padding:17px 18px 21px}.stats{margin:20px 0 8px;gap:9px}.status-hint{font-size:10px;margin-bottom:0}.game-area{min-height:0;padding:15px 0 10px;justify-content:flex-start}.decision-card{min-height:380px;padding:16px 25px 23px}.portrait{margin:16px 0 12px;width:94px;height:94px}.portrait svg{width:57px;height:57px}.event-title{font-size:23px}.event-body{font-size:16px}.buttons{gap:10px}.choice{min-height:62px}.control-hint{font-size:11px}.bottom{font-size:11px}}
   @media(max-width:360px){.right-sheet{padding:14px 11px}.decision-card{min-height:355px}.event-body{font-size:15px}.event-title{font-size:21px}.stat-head span{font-size:9px}}
   @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+
+  /* v2: a more legible pocket notebook, with a real forecast before signing */
+  :root {--paper:#f9f4e9;--ink:#253849;--pale:#d8cbb5;--blue:#426e91;--red:#a54d4c;--green:#3a806a;--gold:#b17b3b}
+  button{-webkit-tap-highlight-color:transparent}
+  .notebook{max-width:1450px;grid-template-columns:minmax(320px,.82fr) minmax(410px,1.18fr)}
+  .left-sheet{padding-right:38px}
+  .right-sheet{padding:25px clamp(20px,3.7vw,56px) 20px;justify-content:space-between}
+  .stats{margin:21px 0 11px;gap:10px}
+  .stat{border-radius:10px;padding:9px 10px 11px;background:#f0eadf99;border:1px solid #d9cfbd}
+  .stat-head{margin-bottom:7px;font-size:12px}
+  .stat-head strong{font-weight:800;white-space:nowrap}
+  .track{height:8px;position:relative;overflow:visible;background:#e0d9cd}
+  .fill{border-radius:99px}
+  .forecast-marker{position:absolute;top:-4px;height:15px;width:3px;border-radius:4px;background:#1e3744;left:50%;transform:translateX(-50%);display:none;box-shadow:0 0 0 2px #fff9ed}
+  .stat.preview .forecast-marker{display:block}
+  .stat.preview .stat-head strong{color:var(--blue)}
+  .stat.danger.preview{border-color:#ac5353}
+  .status-hint{font-size:11px;margin:0;color:#797568;min-height:19px}
+  .game-area{justify-content:flex-start;flex:1;min-height:0;padding:10px 0 8px;gap:10px}
+  .decision-card{min-height:344px;width:min(100%,450px);padding:19px 30px 24px;flex:1;max-height:450px;transition:transform .2s,box-shadow .2s}
+  .portrait{width:92px;height:92px;margin:12px 0 12px}
+  .portrait svg{width:58px;height:58px}
+  .event-title{font-size:clamp(22px,2.15vw,28px);margin:10px 0 10px}
+  .event-body{font-size:clamp(15px,1.35vw,18px)}
+  .decision-card.preview-left{box-shadow:-8px 12px 0 #a54d4c26,0 17px 34px #392e2020}
+  .decision-card.preview-right{box-shadow:8px 12px 0 #3a806a27,0 17px 34px #392e2020}
+  .answer{top:21px;max-width:62%;font-size:10px}
+  .action-panel{width:min(100%,450px);display:flex;flex-direction:column;gap:9px}
+  .forecast-panel{min-height:90px;padding:11px 15px 12px;border:1px dashed #c0b3a0;border-radius:9px;background:#f5ede2;transition:background .18s;display:flex;flex-direction:column;justify-content:center;gap:7px}
+  .forecast-panel.has-choice{border-style:solid;background:#fffbf1}
+  .forecast-head{display:flex;justify-content:space-between;gap:7px;align-items:center;font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.4px}
+  .forecast-head span{font-size:11px;color:var(--blue)}
+  .forecast-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+  .forecast-item{display:flex;flex-direction:column;gap:2px;border-right:1px solid #ded5c6;min-width:0;font:11px/1.3 system-ui,sans-serif}
+  .forecast-item:last-child{border:0}
+  .forecast-item b{font-size:15px;white-space:nowrap}
+  .up{color:#2f8066}.down{color:#aa4d4c}.unchanged{color:#76726c}
+  .forecast-note{font:11px/1.4 system-ui,sans-serif;color:#69655c}
+  .buttons{width:100%;gap:9px}
+  .choice{position:relative;min-height:68px;padding:11px 13px;align-items:flex-start;text-align:left;background:#faf6ed}
+  .choice small{font:11px/1.3 system-ui,sans-serif;color:#78716c}
+  .choice.selected{background:#fffdf7;border:2px solid var(--blue);padding:10px 12px;box-shadow:0 2px 0 #6c8e9d3d}
+  .choice.selected.left{border-color:var(--red)}.choice.selected.right{border-color:var(--green)}
+  .choice-preview{display:block;letter-spacing:.1px}
+  .confirm{width:100%;min-height:45px;border-radius:8px;background:#283e4a;color:white;border:1px solid #22323a;font:700 13px system-ui,sans-serif;transition:background .12s,transform .12s}
+  .confirm:not(:disabled):hover{background:#335d6e;transform:translateY(-1px)}
+  .confirm:disabled{background:#dfd6c8;border-color:#cec2b3;color:#847a6f;cursor:default}
+  .control-hint{font:11px system-ui,sans-serif;color:#746f64;text-align:center;margin:0}
+  .bulletin{width:100%;padding:8px 11px;border:1px solid #c6bba7;background:#eee6d7;border-radius:6px;font:11px/1.4 system-ui,sans-serif;color:#556471;margin:6px 0 0}
+  .bulletin strong{color:var(--red)}
+  .map-toggle{display:none}
+  .bottom{margin-top:auto}
+  @media(max-width:930px) and (min-width:691px){.notebook{grid-template-columns:32% 68%}.left-sheet{padding:28px 18px 40px 36px}.left-sheet h1{font-size:45px}.right-sheet{padding:22px 26px}.stat{padding:7px}.map-foot{left:35px;right:16px}}
+  @media(max-width:690px){
+    body{background:#f7f2e7}
+    .notebook{max-width:600px;min-height:100dvh;box-shadow:none}
+    .left-sheet{padding:10px 16px 11px 25px;border-bottom:1px solid #c3b8a5}
+    .left-sheet h1{font-size:31px;letter-spacing:-1px;margin:3px 0 0}
+    .left-sheet .subtitle{font-size:12px;margin:1px 0 0}
+    .eyebrow{font-size:8px;letter-spacing:1.4px}
+    .holes{top:10px;bottom:auto;left:8px;display:flex;flex-direction:column;gap:7px}
+    .holes i{width:6px;height:6px}
+    .map-toggle{display:block;position:absolute;right:15px;bottom:14px;border:1px solid #b8ad9a;background:#f6efe3;border-radius:5px;padding:6px 9px;color:#3f657d;font:700 11px system-ui,sans-serif}
+    .left-sheet.map-open .map-wrap{display:flex;max-height:340px;margin-top:10px;aspect-ratio:1.3}
+    .left-sheet.map-open .map-note{display:flex;margin:4px 0}
+    .right-sheet{min-height:calc(100dvh - 79px);padding:11px 13px 12px;gap:0}
+    .date{font-size:10px;letter-spacing:.7px}
+    .date small{font-size:11px;margin-top:2px}
+    .reset{padding:7px 9px;font-size:10px}
+    .stats{margin:12px 0 5px;gap:5px}
+    .stat{padding:7px 6px 8px;border-radius:8px}
+    .stat-head{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin-bottom:5px;font-size:10px}
+    .stat-head strong{font-size:12px}
+    .track{height:6px}
+    .forecast-marker{height:12px;top:-4px}
+    .status-hint{font-size:10px;margin-bottom:0;min-height:14px}
+    .game-area{padding:8px 0 8px;gap:9px;flex:0 1 auto}
+    .decision-card{width:min(100%,430px);min-height:265px;max-height:none;flex:none;padding:15px 21px 22px;border-radius:8px}
+    .decision-card:before{inset:10px}
+    .card-number{font-size:9px}
+    .portrait{width:67px;height:67px;margin:9px 0 9px;box-shadow:inset 0 0 0 3px #fdf8ed}
+    .portrait svg{width:44px;height:44px}
+    .speaker{font-size:10px}
+    .event-title{font-size:clamp(21px,5.6vw,26px);margin:8px 0}
+    .event-body{font-size:clamp(14px,4vw,16px);line-height:1.38}
+    .card-corner{font-size:10px;bottom:13px;right:16px}
+    .answer{top:8px;font-size:9px;max-width:69%;padding:6px}
+    .action-panel{gap:7px;width:min(100%,430px)}
+    .forecast-panel{min-height:84px;padding:9px 11px;gap:5px}
+    .forecast-head,.forecast-note{font-size:10px}
+    .forecast-item{font-size:10px}.forecast-item b{font-size:13px}
+    .buttons{gap:7px}.choice{min-height:61px;padding:9px}.choice.selected{padding:8px}
+    .choice strong{font-size:12px}.choice small{font-size:10px}
+    .confirm{min-height:42px}
+    .control-hint{font-size:10px;margin:0}
+    .bulletin{font-size:10px;padding:6px 8px;margin:3px 0 0}
+    .bottom{padding-top:9px;font-size:10px}
+  }
+  @media(max-width:365px){.right-sheet{padding:10px 9px}.decision-card{min-height:270px;padding:14px 15px 20px}.event-title{font-size:20px}.event-body{font-size:14px}.forecast-note{font-size:9px}}
+  @media(max-height:760px) and (max-width:690px){.decision-card{min-height:244px}.portrait{width:54px;height:54px;margin:6px 0}.portrait svg{width:35px;height:35px}.event-title{margin:5px 0}.game-area{gap:6px;padding:6px 0}.action-panel{gap:5px}.forecast-panel{min-height:75px}.choice{min-height:54px}}
 </style>
 </head>
 <body>
@@ -107,6 +210,7 @@
     <div class="eyebrow">Личный архив • Дело № 01</div>
     <h1>Альмерия</h1>
     <div class="subtitle">Тетрадь правителя республики</div>
+    <button class="map-toggle" id="map-toggle" type="button" aria-expanded="false">Развернуть карту ▾</button>
     <div class="divider"></div>
     <div class="map-wrap">
       <!-- Упрощённая контурная карта вдохновлена нарисованным пользователем эскизом. -->
@@ -144,7 +248,8 @@
       <button type="button" class="reset" id="reset">↺ Новая партия</button>
     </div>
     <div class="stats" id="stats" aria-label="Показатели государства"></div>
-    <p class="status-hint" id="status">Держите все показатели в пределах от 1 до 99.</p>
+    <p class="status-hint" id="status">Каждое решение — компромисс.</p>
+    <div class="bulletin" id="bulletin" role="status"><strong>Запись:</strong> Первый год правления. Канцелярия ждёт вашего решения.</div>
     <div class="game-area">
       <article class="decision-card" id="card" aria-live="polite">
         <div class="answer no" id="left-stamp"></div><div class="answer yes" id="right-stamp"></div>
@@ -160,11 +265,19 @@
           <button type="button" class="play-again" id="play-again">Начать заново</button>
         </div>
       </article>
-      <div class="buttons" id="choices">
-        <button type="button" class="choice left" id="btn-left"><strong id="left-text">Отклонить</strong><small>← Свайп влево</small></button>
-        <button type="button" class="choice right" id="btn-right"><strong id="right-text">Принять</strong><small>Свайп вправо →</small></button>
+      <div class="action-panel" id="action-panel">
+        <section class="forecast-panel" id="forecast-panel" aria-live="polite" aria-label="Прогноз последствий">
+          <div class="forecast-head"><b id="forecast-title">ПРОГНОЗ ПОСЛЕДСТВИЙ</b><span id="forecast-label">Не выбран</span></div>
+          <div class="forecast-grid" id="forecast-grid"><span class="forecast-note">Нажми на решение или сдвинь карточку, чтобы сравнить последствия.</span></div>
+          <div class="forecast-note" id="forecast-note">Оба пути имеют свою цену. Сначала оцени последствия, затем подтверди.</div>
+        </section>
+        <div class="buttons" id="choices">
+          <button type="button" class="choice left" id="btn-left" aria-pressed="false"><strong id="left-text">Отклонить</strong><small id="left-effect">Посмотреть последствия ←</small></button>
+          <button type="button" class="choice right" id="btn-right" aria-pressed="false"><strong id="right-text">Принять</strong><small id="right-effect">Посмотреть последствия →</small></button>
+        </div>
+        <button type="button" class="confirm" id="confirm" disabled>Сначала выбери решение</button>
+        <div class="control-hint" id="hint">Свайп или ← → — выбор • Enter — подтвердить</div>
       </div>
-      <div class="control-hint" id="hint">Выберите решение, нажмите ← → или потяните карточку</div>
     </div>
     <footer class="bottom"><span id="counter">Решение 1 / 30</span><button type="button" class="chronicle-btn" id="chronicle-btn">Дневник решений ↗</button></footer>
   </section>
@@ -176,7 +289,7 @@
 'use strict';
 // Вся логика в одном файле: 4 ресурса, события, последствия и 2 ответа.
 const $ = id => document.getElementById(id);
-const STORE = 'almeria-lapse-v1';
+const STORE = 'almeria-lapse-v2';
 const LIMIT = 30;
 const stats = [
   {key:'people', label:'Народ'},
@@ -200,19 +313,19 @@ const E = (who,face,title,body,left,right,l,r,extra={}) => ({who,face,title,body
 const events = [
   E('Министр финансов','minister','Пустая казна','Мэры просят денег на восстановление старых мостов. У нас есть средства, но тогда придётся урезать военные закупки.','Мосты подождут','Выделить средства',[ -8,7,5,0],[11,-12,-5,2]),
   E('Командующий','general','Западный гарнизон','На границе с Картелией замечены войска. Генерал предлагает отправить подкрепление.','Не провоцировать','Усилить границу',[1,5,-7,3],[-4,-10,13,-7]),
-  E('Главный дипломат','diplomat','Послание с севера','Северный Союз предлагает договор о торговле, но требует снизить пошлины.','Отказаться','Подписать',[0,4,0,-7],[2,9,-2,9]),
+  E('Главный дипломат','diplomat','Послание с севера','Северный Союз предлагает договор о торговле, но требует снизить пошлины.','Отказаться','Подписать',[0,4,0,-7],[2,9,-2,9],{setsRight:'union'}),
   E('Фермер','citizen','Засуха в степях','Урожай погибает. Селяне просят выдать зерно из государственных резервов.','Сохранить запасы','Открыть амбары',[-12,7,1,-1],[14,-9,0,2]),
   E('Учёный','scientist','Странный сигнал','Радиостанция на горном перевале принимает шифрованные сообщения неизвестного происхождения.','Игнорировать','Исследовать',[0,5,0,-2],[-1,-8,2,8],{setsRight:'signal'}),
   E('Редактор газеты','journalist','Свободная пресса','Газеты обвиняют кабинет в растрате. Советники требуют временно запретить публикации.','Оставить свободу','Ввести цензуру',[9,-4,-4,4],[-13,4,8,-9]),
   E('Министр природы','minister','Лес под топор','Промышленники хотят вырубить древний лес ради древесины и новых рабочих мест.','Запретить вырубку','Дать разрешение',[5,-6,0,4],[-8,13,0,-3]),
-  E('Командующий','general','Армейская реформа','Штаб просит перевооружить дивизии, хотя казна не выдержит ещё одной крупной программы.','Отложить','Переоснастить',[0,7,-11,1],[-2,-14,16,1]),
+  E('Командующий','general','Армейская реформа','Штаб просит перевооружить дивизии, хотя казна не выдержит ещё одной крупной программы.','Отложить','Переоснастить',[0,7,-11,1],[-2,-14,16,1],{setsRight:'arsenal'}),
   E('Главный дипломат','diplomat','Беженцы у границы','Война в соседней Ренарии заставила тысячи семей искать убежище в Альмерии.','Закрыть переходы','Принять людей',[-9,3,6,-8],[8,-11,-2,11]),
   E('Начальник разведки','spy','Дело о шпионаже','Есть подозрение, что чиновник передаёт документы Восточному Альянсу. Доказательства пока слабые.','Продолжить слежку','Арестовать сейчас',[1,-5,-1,5],[-11,0,8,-7]),
   E('Министр образования','minister','Школа на острове','Дети с острова Арден добираются в школу на лодках. Местные требуют построить новое здание.','Не сейчас','Открыть школу',[-9,5,0,0],[12,-10,0,3]),
   E('Предприниматель','citizen','Новый завод','Инвесторы предлагают завод в Велиграде. Он укрепит экономику, но потребует государственных гарантий.','Отклонить','Поддержать',[1,-2,-1,1],[-4,14,2,3]),
   E('Адмирал','general','Корабли в проливе','Неизвестные суда нарушают границу. Адмирал просит разрешения на досмотр.','Пропустить','Досмотреть',[-1,2,-6,-8],[2,-6,10,6]),
   E('Мэр Велиграда','citizen','Переполненный город','Столица растёт, а жильё дорожает. Мэр предлагает субсидировать строительство.','Отдать рынку','Помочь горожанам',[-9,9,0,-2],[12,-12,0,2]),
-  E('Лидер профсоюза','citizen','Большая забастовка','Рабочие требуют поднять минимальную зарплату. Владельцы заводов предупреждают об увольнениях.','Не вмешиваться','Повысить зарплату',[-15,6,2,-4],[11,-9,-1,6]),
+  E('Лидер профсоюза','citizen','Большая забастовка','Рабочие требуют поднять минимальную зарплату. Владельцы заводов предупреждают об увольнениях.','Не вмешиваться','Повысить зарплату',[-15,6,2,-4],[11,-9,-1,6],{setsRight:'labor'}),
   E('Учёный','scientist','Полезные ископаемые','Экспедиция нашла редкий металл в горах. Разработка опасна для природы, но прибыль огромна.','Сохранить горы','Начать добычу',[7,-5,0,4],[-7,17,4,-2]),
   E('Посол Картелии','diplomat','Пограничный спор','Картелия требует пересмотреть границу возле солёного озера. Есть шанс договориться без войны.','Не уступать','Начать переговоры',[2,3,9,-12],[-3,-9,-5,15]),
   E('Министр транспорта','minister','Железная дорога','Новую ветку можно провести к порту, чтобы связать север и юг страны.','Не строить','Строить',[ -3,7,-1,0],[6,-12,2,8]),
@@ -245,43 +358,140 @@ const events = [
   E('Посол Северного Союза','diplomat','Культурный обмен','Соседи предлагают обмен студентами и учёными. Некоторые чиновники видят риск шпионажа.','Отказаться','Открыть программу',[-2,3,2,-6],[9,-6,-2,12]),
   E('Министр связи','minister','Связь для деревень','Новая сеть соединит горные сёла со столицей. Монтаж дорогой, но это стратегическая инвестиция.','Подождать','Построить сеть',[-7,7,0,1],[11,-11,2,4]),
   E('Судья','citizen','Коррупционный процесс','В суде дело влиятельного министра. Его осуждение вызовет волну отставок в правительстве.','Закрыть дело','Судить открыто',[-10,7,5,-5],[13,-9,-6,11]),
-  E('Торговец','citizen','Новый рынок','Купцы предлагают сделать один порт свободной экономической зоной.','Сохранить пошлины','Создать свободную зону',[-3,10,-1,-4],[4,12,-6,7])
+  E('Торговец','citizen','Новый рынок','Купцы предлагают сделать один порт свободной экономической зоной.','Сохранить пошлины','Создать свободную зону',[-3,10,-1,-4],[4,12,-6,7]),
+
+  E('Совет регионов','minister','Деньги или свобода?','Отдалённые провинции просят налоговую самостоятельность. Генштаб опасается, что бюджет обороны станет слабее.','Оставить центр сильным','Разделить полномочия',[ -12,10,8,-5],[12,-12,-6,7]),
+  E('Руководитель больниц','scientist','Лекарство на всех','Экспериментальное лечение спасёт тысячи людей, но придётся приостановить выпуск другого важного препарата.','Поддержать старое лечение','Запустить новое',[ -8,9,0,2],[15,-13,0,-4]),
+  E('Советник по безопасности','spy','Письмо без подписи','Аноним сообщает о готовящемся перевороте. Проверка опасна для репутации правительства, игнорирование — для безопасности.','Не поднимать шума','Проверить подозрения',[5,3,-9,-5],[-7,-9,12,5]),
+  E('Торговый представитель','diplomat','Последний уголь','Сосед предлагает дешёвую энергию взамен права контролировать наш стратегический мост.','Развивать свои ресурсы','Согласиться на импорт',[-4,-12,5,7],[5,15,-9,-10]),
+  E('Редактор газеты','journalist','Утечка бюджета','В сеть попали данные о секретных расходах. Общество требует объяснений, но публикация раскроет оборонные планы.','Сохранить тайну','Опубликовать отчёт',[-12,3,9,-8],[12,-7,-9,8],{setsRight:'leak'}),
+  E('Капитан погранслужбы','general','Три часа до рассвета','В спорном проливе задержано иностранное судно. Отпустить его — потерять лицо. Арестовать — рискнуть торговлей.','Освободить судно','Задержать экипаж',[1,11,-9,-8],[-7,-11,12,7]),
+  E('Главный инженер','scientist','Новый алгоритм','Университет создал систему контроля энергосети. Она сократит расходы, но может оставить жителей без приватности.','Ограничить наблюдение','Запустить систему',[7,-9,-4,4],[-10,16,5,-7])
 ];
 // Специальные продолжения возникают только после соответствующего решения.
 const followUps = {
   signal:E('Учёный','scientist','Расшифрованный сигнал','Сигнал пришёл из старой подземной станции. Внутри может быть техника, забытая десятилетия назад.','Запечатать станцию','Открыть экспедицию',[1,3,5,-3],[-4,-13,5,17]),
-  ruins:E('Археолог','scientist','Тайна руин','Подземная галерея ведёт к архиву исчезнувшего королевства. Содержимое может вызвать территориальный спор.','Скрыть открытие','Открыть музей',[ -4,5,4,-6],[10,-12,-2,16])
+  ruins:E('Археолог','scientist','Тайна руин','Подземная галерея ведёт к архиву исчезнувшего королевства. Содержимое может вызвать территориальный спор.','Скрыть открытие','Открыть музей',[ -4,5,4,-6],[10,-12,-2,16]),
+  union:E('Посол Северного Союза','diplomat','Скрытый пункт договора','Союз требует исключительного права на часть перевозок. Если согласиться, торговля вырастет, но мы потеряем свободу действий.','Пересмотреть договор','Согласиться на условия',[-3,-8,3,10],[2,13,-7,-11]),
+  arsenal:E('Инспектор армии','general','Неудачные испытания','Новые образцы техники дают сбои. Можно скрыть проблему или остановить программу на доработку.','Не задерживать выпуск','Провести доработку',[-7,9,10,-8],[4,-13,-7,7]),
+  labor:E('Профсоюзный лидер','citizen','Цена повышенной зарплаты','Малый бизнес начал закрывать предприятия после реформы оплаты труда. Нужно выбрать, кому помочь из бюджета.','Поддержать бизнес','Помочь безработным',[-8,-11,3,5],[12,-12,-4,-3]),
+  leak:E('Начальник разведки','spy','Слишком прозрачный отчёт','После публикации данных соседняя страна узнала о слабом месте нашей обороны. Можно временно закрыть порт или рискнуть торговлей.','Закрыть порт','Оставить проход открытым',[-3,-10,11,-4],[7,12,-12,2])
 };
-const initialState = () => ({turn:1,values:[52,52,52,52],used:[],history:[],pending:null,cardId:null,finished:null});
-let state = initialState();
-let card = null;
-let locked = false;
-const readSave = () => {try {const s=JSON.parse(localStorage.getItem(STORE));return s && Array.isArray(s.values) && s.values.length===4 && typeof s.turn==='number' ? s : null;}catch{return null;}};
-const save = () => {try{localStorage.setItem(STORE,JSON.stringify(state));}catch{}};
+
+// Long shadows: major policies produce delayed fallout, not just a one-time +/-.
+const consequences = {
+  'Пустая казна': {
+    left:{delay:3,label:'Мосты не выдержали зимы',delta:[-9,-6,-2,-3],hint:'Изношенные мосты могут позже нарушить торговлю.'},
+    right:{delay:3,label:'Открыт новый торговый путь',delta:[4,8,-1,2],hint:'После ремонта может увеличиться торговля, но военная техника уже закуплена в меньшем объёме.'}
+  },
+  'Западный гарнизон': {
+    left:{delay:2,label:'Пограничная провокация',delta:[-4,-5,-8,-3],hint:'Слабая граница может пригласить к новой провокации.'},
+    right:{delay:3,label:'Протест против призыва',delta:[-8,-4,2,-2],hint:'Подкрепления могут вызвать недовольство призывом.'}
+  },
+  'Засуха в степях': {
+    left:{delay:2,label:'Цена нехватки хлеба',delta:[-12,4,0,-5],hint:'Дефицит еды может привести к волнениям.'},
+    right:{delay:3,label:'Резервы опустели',delta:[4,-9,-2,1],hint:'В случае следующего неурожая потребуется импорт.'}
+  },
+  'Свободная пресса': {
+    left:{delay:3,label:'Газеты раскрыли коррупцию',delta:[5,-5,-4,7],hint:'Свободная пресса может вскрыть неудобные для правительства факты.'},
+    right:{delay:2,label:'Недовольство цензурой',delta:[-9,4,5,-7],hint:'Запреты могут спровоцировать протесты.'}
+  },
+  'Налоги на богатых': {
+    left:{delay:3,label:'Дефицит социальных фондов',delta:[-7,-8,1,-2],hint:'Недостаток налогов может ослабить социальные программы.'},
+    right:{delay:2,label:'Отток капитала',delta:[-3,-12,-2,-5],hint:'Инвесторы могут начать выводить деньги.'}
+  },
+  'Сепаратистские лозунги': {
+    left:{delay:2,label:'Волнения на юге',delta:[-10,-5,-5,-8],hint:'Давление может усилить сепаратизм.'},
+    right:{delay:3,label:'Другие автономии требуют прав',delta:[6,-8,-6,-5],hint:'Новые полномочия могут захотеть и другие регионы.'}
+  },
+  'Секретный договор': {
+    left:{delay:2,label:'Восток вводит пошлины',delta:[-3,-9,3,-7],hint:'Отказ может обострить торговые отношения.'},
+    right:{delay:3,label:'Чужой флот в наших портах',delta:[-8,7,-9,-10],hint:'Зависимость от союзников может оказаться долгой.'}
+  },
+  'Новый завод': {
+    left:{delay:2,label:'Инвесторы ушли в Картелию',delta:[-3,-8,0,-5],hint:'Инвесторы могут выбрать соседей.'},
+    right:{delay:3,label:'Завод требует субсидий',delta:[-5,-9,3,1],hint:'Гарантии государства останутся обязательством.'}
+  },
+  'Право на свой язык': {
+    left:{delay:2,label:'Митинги в автономии',delta:[-10,-5,-3,-7],hint:'Отказ может радикализировать активистов.'},
+    right:{delay:3,label:'Перестройка школьной системы',delta:[5,-9,-2,4],hint:'Новые программы потребуют дополнительных учителей и денег.'}
+  },
+  'Автоматизация': {
+    left:{delay:2,label:'Отставание промышленности',delta:[-3,-11,-2,-4],hint:'Страна может потерять конкурентоспособность.'},
+    right:{delay:2,label:'Профсоюзы выходят на улицу',delta:[-12,5,0,-5],hint:'Уволенные рабочие могут начать масштабную забастовку.'}
+  },
+  'Лекарство на всех': {
+    left:{delay:3,label:'Старый препарат теряет эффективность',delta:[-10,4,0,-3],hint:'Отложенное обновление лечения может стоить жизней.'},
+    right:{delay:3,label:'Неожиданная реакция на препарат',delta:[-7,-8,0,-5],hint:'Испытания могут выявить побочные эффекты.'}
+  },
+  'Деньги или свобода?': {
+    left:{delay:2,label:'Регионы требуют самостоятельности',delta:[-8,3,3,-5],hint:'Недовольство централизмом может вырасти.'},
+    right:{delay:3,label:'Провинции соревнуются за налоги',delta:[4,-9,-7,2],hint:'Автономии могут неравномерно распределять ресурсы.'}
+  },
+  'Последний уголь': {
+    left:{delay:3,label:'Первый собственный энергоблок',delta:[4,9,3,4],hint:'Своё производство окупится нескоро.'},
+    right:{delay:2,label:'Контроль моста перешёл соседям',delta:[-7,4,-9,-9],hint:'Зависимость от импорта может привести к потере контроля.'}
+  },
+  'Утечка бюджета': {
+    left:{delay:2,label:'Новые слухи об утечке',delta:[-8,3,3,-7],hint:'Молчание создаёт почву для слухов.'},
+    right:{delay:3,label:'Разведка соседей изучила отчёт',delta:[2,-3,-9,-5],hint:'Опубликованные детали могут помочь противникам.'}
+  },
+  'Новый алгоритм': {
+    left:{delay:2,label:'Рост расходов энергосети',delta:[3,-7,-1,-3],hint:'Отказ замедлит модернизацию.'},
+    right:{delay:3,label:'Скандал о слежке',delta:[-10,8,0,-8],hint:'Жители могут узнать о сборе личных данных.'}
+  }
+};
+const initialState = () => ({turn:1,values:[52,52,52,52],used:[],history:[],pending:null,cardId:null,finished:null,deferred:[],bulletin:'Первый год правления. Канцелярия ждёт решения.'});
+let state=initialState();
+let card=null,selected=null,hovered=null,locked=false;
+const readSave=()=>{try{let raw=localStorage.getItem(STORE)||localStorage.getItem('almeria-lapse-v1');let s=JSON.parse(raw);if(!s||!Array.isArray(s.values)||s.values.length!==4||!Number.isInteger(s.turn))return null;return {...initialState(),...s,deferred:Array.isArray(s.deferred)?s.deferred:[],history:Array.isArray(s.history)?s.history:[]};}catch{return null;}};
+const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state));}catch{}};
 function pickCard(){
-  if(state.pending && followUps[state.pending]){state.cardId='special:'+state.pending;state.pending=null;return;}
-  let available=events.map((_,i)=>i).filter(i=>!state.used.slice(-10).includes(i));
+  if(state.pending&&followUps[state.pending]){state.cardId='special:'+state.pending;state.pending=null;return;}
+  let available=events.map((_,i)=>i).filter(i=>!state.used.slice(-12).includes(i));
   if(!available.length)available=events.map((_,i)=>i);
   const id=available[Math.floor(Math.random()*available.length)];
-  state.cardId='event:'+id;
-  state.used.push(id);
-  if(state.used.length>60)state.used=state.used.slice(-35);
+  state.cardId='event:'+id;state.used.push(id);
+  if(state.used.length>70)state.used=state.used.slice(-40);
 }
 function currentCard(){
   if(!state.cardId)pickCard();
-  if(state.cardId.startsWith('special:'))return followUps[state.cardId.slice(8)] || events[0];
-  return events[Number(state.cardId.slice(6))] || events[0];
+  if(state.cardId.startsWith('special:'))return followUps[state.cardId.slice(8)]||events[0];
+  return events[Number(state.cardId.slice(6))]||events[0];
 }
-function showStats(){
+const sign=n=>n>0?`+${n}`:`${n}`;
+const clamp=n=>Math.max(0,Math.min(100,n));
+function deltaOf(side){const base=(side==='right'?card.r:card.l).slice();return base;}
+const changeType=v=>v>0?'up':v<0?'down':'unchanged';
+function preview(side){
+  if(!card||state.finished)return;
+  const delta=side?deltaOf(side):null;
   $('stats').innerHTML=stats.map((st,i)=>{
-    const v=state.values[i];const danger=v<18||v>82;
-    return `<div class="stat ${danger?'danger':''}" title="${st.label}: ${v} из 100"><div class="stat-head"><span>${st.label}</span><strong>${v}</strong></div><div class="track"><div class="fill" style="width:${v}%"></div></div></div>`;
+    const v=state.values[i],next=delta?clamp(v+delta[i]):v;
+    const danger=delta?(next<=0||next>=100):(v<17||v>83);
+    return `<div class="stat ${danger?'danger':''} ${delta?'preview':''}" title="${st.label}: ${v} из 100"><div class="stat-head"><span>${st.label}</span><strong>${v}${delta?` → ${next}`:''}</strong></div><div class="track"><div class="fill" style="width:${v}%"></div><div class="forecast-marker" style="left:${next}%"></div></div></div>`;
   }).join('');
+  const c=card;
+  $('forecast-panel').classList.toggle('has-choice',!!side);
+  $('forecast-label').textContent=!side?'Выберите сторону':side==='left'?'← Левое решение':'Правое решение →';
+  $('forecast-title').textContent=!side?'ПРОГНОЗ ПОСЛЕДСТВИЙ':side==='left'?c.left:c.right;
+  $('forecast-grid').innerHTML=delta?delta.map((d,i)=>`<div class="forecast-item"><span>${stats[i].label}</span><b class="${changeType(d)}">${sign(d)}</b></div>`).join(''):'<div class="forecast-note" style="grid-column:1/-1">Сначала выбери решение. Показатели покажут, что изменится.</div>';
+  const consequence=side?consequences[c.title]?.[side]:null;
+  const critical=delta&&delta.some((d,i)=>clamp(state.values[i]+d)===0||clamp(state.values[i]+d)===100);
+  const bothCost=delta&&delta.some(n=>n<0)&&delta.some(n=>n>0);
+  $('forecast-note').textContent=!side?'Даже удачное решение имеет цену. Последствия могут проявиться позже.':critical?'⚠ Внимание: это решение немедленно завершит правление.':consequence?`Позже: ${consequence.hint}`:bothCost?'Это немедленный прогноз. Возможны дополнительные политические последствия.':'Последствия могут оказаться сложнее ожидаемого.';
+  $('btn-left').classList.toggle('selected',selected==='left');
+  $('btn-right').classList.toggle('selected',selected==='right');
+  $('btn-left').setAttribute('aria-pressed',String(selected==='left'));
+  $('btn-right').setAttribute('aria-pressed',String(selected==='right'));
+  $('confirm').disabled=!selected||!!state.finished;
+  $('confirm').textContent=selected?`Утвердить: ${selected==='left'?c.left:c.right}`:'Сначала выбери решение';
+  $('card').classList.toggle('preview-left',side==='left');
+  $('card').classList.toggle('preview-right',side==='right');
 }
 function render(){
-  card=currentCard();
-  showStats();
-  $('date').innerHTML=`${state.turn}-й год правления<small>${2029+state.turn} год · Велиград</small>`;
+  card=currentCard();selected=null;hovered=null;
+  $('date').innerHTML=`${Math.min(state.turn,LIMIT)}-й год правления<small>${2029+Math.min(state.turn,LIMIT)} год · Велиград</small>`;
   $('counter').textContent=`Решение ${Math.min(state.turn,LIMIT)} / ${LIMIT}`;
   $('card-number').textContent=`ДЕЛО № ${String(state.turn).padStart(3,'0')}`;
   $('portrait').innerHTML=icons[card.face]||icons.citizen;
@@ -292,100 +502,103 @@ function render(){
   $('right-text').textContent=card.right;
   $('left-stamp').textContent=card.left;
   $('right-stamp').textContent=card.right;
-  $('choices').style.display=state.finished?'none':'grid';
-  $('hint').style.display=state.finished?'none':'block';
-  $('status').textContent=state.values.some(v=>v<18||v>82)?'Внимание: один из показателей близок к опасной границе.':'Сохраняйте баланс: 0 и 100 означают конец правления.';
+  $('left-effect').textContent=briefDelta(card.l);
+  $('right-effect').textContent=briefDelta(card.r);
+  $('action-panel').style.display=state.finished?'none':'flex';
+  $('status').textContent=state.values.some(v=>v<18||v>82)?'Риск кризиса: показатели у опасной границы (0 или 100 = поражение).':'Баланс важнее максимума: 0 или 100 любого показателя = поражение.';
+  $('bulletin').innerHTML=`<strong>Последняя запись:</strong> ${escapeHtml(state.bulletin||'Канцелярия ждёт решения.')}`;
   $('end-screen').classList.toggle('visible',!!state.finished);
-  if(state.finished){
-    $('end-title').textContent=state.finished.title;
-    $('end-text').textContent=state.finished.text;
-    $('end-ornament').textContent=state.finished.win?'✦':'✕';
-  }
-  save();
+  if(state.finished){$('end-title').textContent=state.finished.title;$('end-text').textContent=state.finished.text;$('end-ornament').textContent=state.finished.win?'✦':'✕';}
+  $('card').style.transform='rotate(-.65deg)';
+  preview(null);save();
+}
+function briefDelta(delta){
+  const strengths=delta.map((d,i)=>({d,label:stats[i].label})).filter(o=>o.d>0).sort((a,b)=>b.d-a.d);
+  const costs=delta.map((d,i)=>({d,label:stats[i].label})).filter(o=>o.d<0).sort((a,b)=>a.d-b.d);
+  return `${strengths[0]?strengths[0].label+' '+sign(strengths[0].d):'Без роста'} · ${costs[0]?costs[0].label+' '+sign(costs[0].d):'Есть риск'}`;
 }
 function ending(){
   const fail=state.values.findIndex(v=>v<=0||v>=100);
   if(fail>=0){
-    const names=[
-      ['Народное восстание','Вы потеряли доверие общества. На площади Велиграда собрались тысячи людей, и правительство пало.'],
-      ['Финансовый крах','Финансовая система не выдержала вашего правления. Экономика республики разрушена.'],
-      ['Военный переворот','Генеральный штаб решил, что стране нужен другой руководитель. Вы отстранены от власти.'],
-      ['Дипломатическая катастрофа','Внешнее влияние разрушило независимость Альмерии. Ваше правление завершилось.']
-    ];
-    const high=[
-      ['Эпоха великих ожиданий','Народ возложил на вас невозможные ожидания. Массовые требования и политический кризис привели к отставке.'],
-      ['Власть капитала','Казна переполнена, но финансовые элиты присвоили государственные институты. Правление перешло к олигархам.'],
-      ['Власть генералов','Армия стала сильнее государства и захватила политическую власть.'],
-      ['Чужие интересы','Альмерия стала зависеть от зарубежных союзов. Вы утратили право определять её будущее.']
-    ];
-    return {title:(state.values[fail]<=0?names:high)[fail][0],text:(state.values[fail]<=0?names:high)[fail][1]+` Вы продержались ${state.turn} ${plural(state.turn,'год','года','лет')}.`,win:false};
+    const low=[['Народное восстание','Жители вышли на улицы, и правительство пало.'],['Финансовый крах','Экономика не выдержала, казна опустела.'],['Военная катастрофа','Генеральный штаб лишил правительство власти.'],['Дипломатическая изоляция','Соседи больше не признают независимость решений Альмерии.']];
+    const high=[['Кризис ожиданий','Обещаний оказалось слишком много, правительство не смогло их выполнить.'],['Власть олигархов','Богатые элиты присвоили государственные институты.'],['Власть генералов','Армия стала сильнее государства и захватила власть.'],['Чужие интересы','Союзники подменили внешнюю политику Альмерии своими интересами.']];
+    const x=(state.values[fail]<=0?low:high)[fail];
+    return {title:x[0],text:x[1]+` Вы продержались ${Math.min(state.turn,LIMIT)} ${plural(Math.min(state.turn,LIMIT),'год','года','лет')}.`,win:false};
   }
-  if(state.turn>=LIMIT){
+  if(state.turn>LIMIT){
     const avg=state.values.reduce((a,b)=>a+b,0)/4;
-    return {title:avg>57?'Золотая эпоха Альмерии':'Тридцать лет у власти',text:avg>57?'Ваша политика сохранила баланс и принесла стране процветание. Ваше имя осталось в учебниках истории.':'Несмотря на кризисы, Республика Альмерия сохранилась. Правление завершилось мирной передачей власти.',win:true};
+    return {title:avg>55?'Хрупкий золотой век':'Республика устояла',text:avg>55?'Вы сумели удержать противоречивую страну на плаву. Не все реформы были популярны, но Альмерия стала сильнее.':'Тридцать лет компромиссов не прошли даром. Страна пережила кризисы, и власть передана мирно.',win:true};
   }
   return null;
 }
 function plural(n,one,two,five){const x=n%10,y=n%100;return x===1&&y!==11?one:x>=2&&x<=4&&(y<12||y>14)?two:five;}
-function choose(side){
-  if(locked||state.finished)return;
-  locked=true;
-  const c=currentCard();
-  const positive=side==='right';
-  const values=(positive?c.r:c.l);
-  const name=positive?c.right:c.left;
-  const el=$('card');
-  el.classList.add(positive?'preview-right':'preview-left');
-  el.style.transform=`translateX(${positive?110:-110}px) rotate(${positive?12:-12}deg)`;
-  el.style.opacity='.15';
-  setTimeout(()=>{
-    state.values=state.values.map((n,i)=>Math.min(100,Math.max(0,n+values[i])));
-    state.history.unshift({turn:state.turn,title:c.title,choice:name,delta:values.slice()});
-    state.history=state.history.slice(0,40);
-    if(positive&&c.setsRight)state.pending=c.setsRight;
+function select(side){if(locked||state.finished)return;selected=side;preview(side);}
+function commit(){
+  if(!selected||locked||state.finished)return;
+  locked=true;const side=selected,c=card,delta=deltaOf(side),choice=side==='right'?c.right:c.left;
+  state.values=state.values.map((n,i)=>clamp(n+delta[i]));
+  state.history.unshift({turn:state.turn,title:c.title,choice,delta:delta.slice()});
+  state.history=state.history.slice(0,80);
+  const follow=consequences[c.title]?.[side];
+  if(follow)state.deferred.push({...follow,due:state.turn+follow.delay});
+  if(side==='right'&&c.setsRight)state.pending=c.setsRight;
+  state.bulletin=`${c.title}: «${choice}». ${briefDelta(delta)}.`;
+  state.finished=ending();
+  if(!state.finished){
+    state.turn++;
+    const due=state.deferred.filter(v=>v.due<=state.turn);
+    state.deferred=state.deferred.filter(v=>v.due>state.turn);
+    for(const d of due){
+      state.values=state.values.map((v,i)=>clamp(v+d.delta[i]));
+      state.history.unshift({turn:state.turn,title:'Последствие: '+d.label,choice:'Эхо старого решения',delta:d.delta.slice()});
+      state.bulletin=`${d.label}. ${briefDelta(d.delta)}.`;
+    }
     state.finished=ending();
-    if(!state.finished){state.turn++;state.cardId=null;pickCard();}
-    el.classList.remove('preview-left','preview-right');
-    el.style.transform='rotate(-.65deg)';el.style.opacity='1';
-    locked=false;
-    render();
-  },210);
+    if(!state.finished){state.cardId=null;pickCard();}
+  }
+  locked=false;render();
 }
-$('btn-left').addEventListener('click',()=>choose('left'));
-$('btn-right').addEventListener('click',()=>choose('right'));
-function restart(){if(state.history.length>0&&!confirm('Начать новую партию? Текущий прогресс будет сброшен.'))return;state=initialState();card=null;locked=false;render();}
+$('btn-left').addEventListener('click',()=>select('left'));
+$('btn-right').addEventListener('click',()=>select('right'));
+$('confirm').addEventListener('click',commit);
+$('btn-left').addEventListener('mouseenter',()=>{if(!selected)preview('left');});
+$('btn-right').addEventListener('mouseenter',()=>{if(!selected)preview('right');});
+$('btn-left').addEventListener('mouseleave',()=>{if(!selected)preview(null);});
+$('btn-right').addEventListener('mouseleave',()=>{if(!selected)preview(null);});
+function restart(){if(state.history.length>0&&!confirm('Начать новую партию? Текущий прогресс будет сброшен.'))return;state=initialState();locked=false;render();}
 $('reset').addEventListener('click',restart);
 $('play-again').addEventListener('click',()=>{state=initialState();render();});
-function journal(open){$('chronicle').classList.toggle('open',open);if(open){$('log').innerHTML=state.history.length?state.history.map(h=>`<div class="logline"><strong>ГОД ${h.turn} · ${escapeHtml(h.title)}</strong>${escapeHtml(h.choice)} · ${h.delta.map((d,i)=>`${d>0?'+':''}${d} ${stats[i].label.toLowerCase()}`).join(', ')}</div>`).join(''):'<p>Пока в летописи нет ни одного решения.</p>';}}
+function journal(open){$('chronicle').classList.toggle('open',open);if(open){$('log').innerHTML=state.history.length?state.history.map(h=>`<div class="logline"><strong>ГОД ${h.turn} · ${escapeHtml(h.title)}</strong>${escapeHtml(h.choice)} · ${h.delta.map((d,i)=>`${sign(d)} ${stats[i].label.toLowerCase()}`).join(', ')}</div>`).join(''):'<p>Пока в летописи нет ни одного решения.</p>';}}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 $('chronicle-btn').addEventListener('click',()=>journal(true));
 $('close').addEventListener('click',()=>journal(false));
 $('chronicle').addEventListener('click',e=>{if(e.target===$('chronicle'))journal(false);});
+$('map-toggle').addEventListener('click',()=>{const shown=document.querySelector('.left-sheet').classList.contains('map-open');document.querySelector('.left-sheet').classList.toggle('map-open',!shown);$('map-toggle').setAttribute('aria-expanded',String(!shown));$('map-toggle').textContent=!shown?'Свернуть карту ▴':'Развернуть карту ▾';});
 document.addEventListener('keydown',e=>{
   if($('chronicle').classList.contains('open')){if(e.key==='Escape')journal(false);return;}
-  if(e.key==='ArrowLeft'){e.preventDefault();choose('left');}
-  if(e.key==='ArrowRight'){e.preventDefault();choose('right');}
+  if(e.key==='ArrowLeft'){e.preventDefault();select('left');}
+  if(e.key==='ArrowRight'){e.preventDefault();select('right');}
+  if(e.key==='Enter'&&selected&&document.activeElement.tagName!=='BUTTON'){e.preventDefault();commit();}
 });
-// Управление мышью и пальцем, без библиотек.
-let downX=null, downY=null;
+// Swiping now previews first and never silently signs a decree.
+let downX=null,downY=null;
 $('card').addEventListener('pointerdown',e=>{if(state.finished||locked)return;downX=e.clientX;downY=e.clientY;try{$('card').setPointerCapture(e.pointerId);}catch{}});
 $('card').addEventListener('pointermove',e=>{
   if(downX===null||locked||state.finished)return;
-  const dx=e.clientX-downX;
-  if(Math.abs(dx)<12)return;
-  $('card').style.transform=`translateX(${Math.max(-140,Math.min(140,dx))}px) rotate(${dx/18}deg)`;
-  $('card').classList.toggle('preview-left',dx< -44);
-  $('card').classList.toggle('preview-right',dx>44);
+  const dx=e.clientX-downX;if(Math.abs(dx)<10)return;
+  const bounded=Math.max(-95,Math.min(95,dx));
+  $('card').style.transform=`translateX(${bounded}px) rotate(${dx/24}deg)`;
+  preview(dx< -22?'left':dx>22?'right':selected);
 });
 $('card').addEventListener('pointerup',e=>{
   if(downX===null)return;
-  const dx=e.clientX-downX;const dy=e.clientY-downY;downX=null;downY=null;
-  if(Math.abs(dx)>85&&Math.abs(dx)>Math.abs(dy)*1.2){choose(dx<0?'left':'right');}
-  else{$('card').style.transform='rotate(-.65deg)';$('card').classList.remove('preview-left','preview-right');}
+  const dx=e.clientX-downX,dy=e.clientY-downY;downX=null;downY=null;
+  $('card').style.transform='rotate(-.65deg)';
+  if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.15)select(dx<0?'left':'right');
+  else preview(selected);
 });
-$('card').addEventListener('pointercancel',()=>{downX=null;downY=null;$('card').style.transform='rotate(-.65deg)';$('card').classList.remove('preview-left','preview-right');});
-state=readSave()||initialState();
-render();
+$('card').addEventListener('pointercancel',()=>{downX=null;downY=null;$('card').style.transform='rotate(-.65deg)';preview(selected);});
+state=readSave()||initialState();render();
 </script>
 </body>
 </html>
